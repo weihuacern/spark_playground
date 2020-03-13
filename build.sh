@@ -2,7 +2,7 @@
 
 set -e
 
-TAG=2.4.1-hadoop2.7
+TAG=2.4.5-hadoop2.7
 
 build() {
     NAME=$1
@@ -17,6 +17,6 @@ build base
 build master
 build worker
 build submit
-build java-template template/java
-build scala-template template/scala
-build python-template template/python
+#build java-template template/java
+#build scala-template template/scala
+#build python-template template/python

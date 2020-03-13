@@ -1,9 +1,10 @@
-FROM spark-base:2.4.1-hadoop2.7
+FROM spark-base:2.4.5-hadoop2.7
 
 MAINTAINER Hua Wei <weihua19900704@gmail.com>
 
 COPY worker.sh /
 
+ENV SPARK_WORKER_PORT 45000
 ENV SPARK_WORKER_WEBUI_PORT 8081
 ENV SPARK_WORKER_LOG /spark/logs
 ENV SPARK_MASTER "spark://spark-master:7077"

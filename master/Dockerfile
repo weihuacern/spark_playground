@@ -1,4 +1,4 @@
-FROM spark-base:2.4.1-hadoop2.7
+FROM spark-base:2.4.5-hadoop2.7
 
 MAINTAINER Hua Wei <weihua19900704@gmail.com>
 
