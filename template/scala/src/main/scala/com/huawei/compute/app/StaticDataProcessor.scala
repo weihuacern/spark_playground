@@ -2,7 +2,7 @@ package com.huawei.compute.app
 
 import java.util.Properties
 
-import org.apache.spark.sql.{DataFrame, Row}
+import org.apache.spark.sql.{DataFrame, Row, SaveMode}
 import org.apache.spark.sql.functions.{col, collect_list, concat, lit}
 import org.apache.spark.sql.types.{StructType, StructField, StringType, IntegerType}
 
@@ -84,8 +84,10 @@ class StaticDataProcessor(connStr: String) extends ComputeAppBase(connStr) {
         val connProps = new Properties();
         connProps.put("user", "postgres");
         connProps.put("password", "postgres");
+
         df.write
-        .jdbc("jdbc:postgresql:127.0.0.1:5432", "compute_engine_data.static_data", connProps);
+        .mode(SaveMode.Append)
+        .jdbc("jdbc:postgresql://127.0.0.1:5432/compute_engine_data", "static_data", connProps);
     }
     
     def Run() {
@@ -97,6 +99,6 @@ class StaticDataProcessor(connStr: String) extends ComputeAppBase(connStr) {
         dfO.show(5, false);
         dfO.printSchema();
         // Write Output
-        //this.writeOutputDataFrame(dfO);
+        this.writeOutputDataFrame(dfO);
     }
 }

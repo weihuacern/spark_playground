@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
 import java.util.Properties
 
-import org.apache.spark.sql.{DataFrame, Row}
+import org.apache.spark.sql.{DataFrame, Row, SaveMode}
 import org.apache.spark.sql.functions.{col, concat, lit, to_timestamp, udf}
 import org.apache.spark.sql.types.{StructType, StructField, StringType, IntegerType, TimestampType}
 
@@ -77,9 +77,10 @@ class DynamicDataProcessor(connStr: String) extends ComputeAppBase(connStr) {
         val connProps = new Properties();
         connProps.put("user", "postgres");
         connProps.put("password", "postgres");
+
         df.write
-        //.option("createTableColumnTypes", "name CHAR(64), comments VARCHAR(1024)")
-        .jdbc("jdbc:postgresql:127.0.0.1:5432", "compute_engine_data.dynamic_data", connProps);
+        .mode(SaveMode.Append)
+        .jdbc("jdbc:postgresql://127.0.0.1:5432/compute_engine_data", "dynamic_data", connProps);
     }
     
     def Run() {
@@ -91,7 +92,7 @@ class DynamicDataProcessor(connStr: String) extends ComputeAppBase(connStr) {
         dfO.show(5, false);
         dfO.printSchema();
         // Write Output
-        //this.writeOutputDataFrame(dfO);
+        this.writeOutputDataFrame(dfO);
     }
     
     def TestPrint() {

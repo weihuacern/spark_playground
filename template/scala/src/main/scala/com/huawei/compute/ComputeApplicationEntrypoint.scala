@@ -30,7 +30,6 @@ object ComputeApplicationEntrypoint {
             case a: ArrayIndexOutOfBoundsException => println("Give at least 1 param as application name!");
             return;
         }
-        //val appName = "aaa";
         appName match {
             case "StaticDataProcessor" => this.RunStaticDataProcessor();
             case "DynamicDataProcessor" => this.RunDynamicDataProcessor();
