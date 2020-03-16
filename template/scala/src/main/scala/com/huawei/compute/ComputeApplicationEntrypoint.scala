@@ -1,5 +1,7 @@
 package com.huawei.compute
 
+import java.lang.ArrayIndexOutOfBoundsException
+
 import com.huawei.compute.app.{StaticDataProcessor, DynamicDataProcessor}
 
 object ComputeApplicationEntrypoint {
@@ -20,8 +22,15 @@ object ComputeApplicationEntrypoint {
     }
     
     def main(args: Array[String]) {
-        //val appName = args(0);
-        val appName = "aaa";
+        var appName : String = "";
+        try {
+            appName = args(0);
+            println("Processing application: " + appName);
+        } catch {
+            case a: ArrayIndexOutOfBoundsException => println("Give at least 1 param as application name!");
+            return;
+        }
+        //val appName = "aaa";
         appName match {
             case "StaticDataProcessor" => this.RunStaticDataProcessor();
             case "DynamicDataProcessor" => this.RunDynamicDataProcessor();
