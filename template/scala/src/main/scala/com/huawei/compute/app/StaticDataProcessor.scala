@@ -1,4 +1,4 @@
-package com.huawei.app
+package com.huawei.compute.app
 
 import java.util.Properties
 
@@ -6,7 +6,7 @@ import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.functions.{col, collect_list, concat, lit}
 import org.apache.spark.sql.types.{StructType, StructField, StringType, IntegerType}
 
-import com.huawei.base.ComputeAppBase
+import com.huawei.compute.base.ComputeAppBase
 
 class StaticDataProcessor(connStr: String) extends ComputeAppBase(connStr) {
     def readInputDataframe() : DataFrame = {
@@ -55,7 +55,7 @@ class StaticDataProcessor(connStr: String) extends ComputeAppBase(connStr) {
             StructField("col_name", StringType, true)
         );
         
-        val df = spark.createDataFrame(
+        val df = this.sparkSession.createDataFrame(
             this.sparkSession.sparkContext.parallelize(data),
             StructType(schema)
         );

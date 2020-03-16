@@ -1,4 +1,4 @@
-package com.huawei.base
+package com.huawei.compute.base
 
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SparkSession

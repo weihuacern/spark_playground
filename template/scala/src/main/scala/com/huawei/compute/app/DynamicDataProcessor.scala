@@ -1,4 +1,4 @@
-package com.huawei.app
+package com.huawei.compute.app
 
 import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
@@ -8,7 +8,7 @@ import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.functions.{col, concat, lit, to_timestamp, udf}
 import org.apache.spark.sql.types.{StructType, StructField, StringType, IntegerType, TimestampType}
 
-import com.huawei.base.ComputeAppBase
+import com.huawei.compute.base.ComputeAppBase
 
 class DynamicDataProcessor(connStr: String) extends ComputeAppBase(connStr) {
     def readInputDataframe() : DataFrame = {
@@ -33,7 +33,7 @@ class DynamicDataProcessor(connStr: String) extends ComputeAppBase(connStr) {
             StructField("cmd", StringType, true)
         );
         
-        val df = spark.createDataFrame(
+        val df = this.sparkSession.createDataFrame(
             this.sparkSession.sparkContext.parallelize(data),
             StructType(schema)
         );
