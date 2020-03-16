@@ -1,5 +1,7 @@
 package com.huawei.compute.base
 
+import java.util.Properties
+
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SparkSession
 
@@ -9,6 +11,20 @@ class ComputeAppBase(connStr: String) {
     protected var sparkSession :SparkSession = _;
     protected var tsFormat :String = "yyyy-MM-dd/HH:mm:ss.SSS";
     protected val delimiter :String = ":::";
+
+    def getJDBCPostgreSQLConnStr() : String = {
+        val host = "127.0.0.1";
+        val port = 5432;
+        val dbName = "compute_engine_data";
+        return "jdbc:postgresql://%s:%d/%s".format(host, port, dbName);
+    }
+
+    def getJDBCPostgreSQLSecret() : Properties = {
+        var connProps = new Properties();
+        connProps.put("user", "postgres");
+        connProps.put("password", "postgres");
+        return connProps;
+    }
 
     def Init() {
         try {
@@ -20,6 +36,10 @@ class ComputeAppBase(connStr: String) {
         }
     }
     
+    // Declare without implementation
+    def Run() {
+    }
+
     def Stop() {
         try {
             this.sparkContext.stop();

@@ -21,7 +21,16 @@ class DynamicDataProcessor(connStr: String) extends ComputeAppBase(connStr) {
                 "SELECT cid, gender, email FROM customer.china;"),
             Row("2020-03-14/00:41:01.568",
                 "172.16.3.10", 34467, "172.16.1.4", 5432,
-                "SELECT eid, email, birthday FROM employee.japan;")
+                "SELECT eid, email, birthday FROM employee.japan;"),
+            Row("2020-03-14/00:42:10.468",
+                "172.16.3.10", 43321, "172.16.1.2", 3306,
+                "SELECT eid, phone_number FROM employee.switzerland;"),
+            Row("2020-03-14/00:42:51.153",
+                "172.16.4.10", 35493, "172.16.1.3", 1433,
+                "SELECT cid, gender, email FROM customer.china;"),
+            Row("2020-03-14/00:44:13.546",
+                "172.16.3.10", 25737, "172.16.1.2", 3306,
+                "SELECT eid, phone_number FROM employee.switzerland;")
         );
         
         val schema = List(
@@ -74,16 +83,15 @@ class DynamicDataProcessor(connStr: String) extends ComputeAppBase(connStr) {
         PRIMARY KEY(ts, node_id)
         );
         */
-        val connProps = new Properties();
-        connProps.put("user", "postgres");
-        connProps.put("password", "postgres");
+        val jdbcPostgreSQLConnStr = this.getJDBCPostgreSQLConnStr();
+        var connProps = this.getJDBCPostgreSQLSecret();
 
         df.write
-        .mode(SaveMode.Append)
-        .jdbc("jdbc:postgresql://127.0.0.1:5432/compute_engine_data", "dynamic_data", connProps);
+        .mode(SaveMode.Overwrite)
+        .jdbc(jdbcPostgreSQLConnStr, "dynamic_data", connProps);
     }
     
-    def Run() {
+    override def Run() {
         // Load Input
         var dfI = this.readInputDataframe();
         dfI.show(5, false);
@@ -93,10 +101,5 @@ class DynamicDataProcessor(connStr: String) extends ComputeAppBase(connStr) {
         dfO.printSchema();
         // Write Output
         this.writeOutputDataFrame(dfO);
-    }
-    
-    def TestPrint() {
-        println(this.appName);
-        println(this.connStr);
     }
 }

@@ -81,16 +81,15 @@ class StaticDataProcessor(connStr: String) extends ComputeAppBase(connStr) {
         PRIMARY KEY(node_id)
         );
         */
-        val connProps = new Properties();
-        connProps.put("user", "postgres");
-        connProps.put("password", "postgres");
+        val jdbcPostgreSQLConnStr = this.getJDBCPostgreSQLConnStr();
+        var connProps = this.getJDBCPostgreSQLSecret();
 
         df.write
-        .mode(SaveMode.Append)
-        .jdbc("jdbc:postgresql://127.0.0.1:5432/compute_engine_data", "static_data", connProps);
+        .mode(SaveMode.Overwrite)
+        .jdbc(jdbcPostgreSQLConnStr, "static_data", connProps);
     }
     
-    def Run() {
+    override def Run() {
         // Read Input
         var dfI = this.readInputDataframe();
         dfI.show(5, false);

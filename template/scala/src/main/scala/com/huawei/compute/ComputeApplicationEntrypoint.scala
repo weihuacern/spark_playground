@@ -2,7 +2,7 @@ package com.huawei.compute
 
 import java.lang.ArrayIndexOutOfBoundsException
 
-import com.huawei.compute.app.{StaticDataProcessor, DynamicDataProcessor}
+import com.huawei.compute.app.{StaticDataProcessor, DynamicDataProcessor, CoreDataGenerator}
 
 object ComputeApplicationEntrypoint {
     protected val connStr :String = "local[4]";
@@ -20,6 +20,13 @@ object ComputeApplicationEntrypoint {
         app.Run();
         app.Stop();
     }
+
+    def RunCoreDataGenerator() {
+        val app = new CoreDataGenerator(this.connStr);
+        app.Init();
+        app.Run();
+        app.Stop();
+    }
     
     def main(args: Array[String]) {
         var appName : String = "";
@@ -33,6 +40,7 @@ object ComputeApplicationEntrypoint {
         appName match {
             case "StaticDataProcessor" => this.RunStaticDataProcessor();
             case "DynamicDataProcessor" => this.RunDynamicDataProcessor();
+            case "CoreDataGenerator" => this.RunCoreDataGenerator();
             case _  => println("Invalid compute application name: " + appName);
         }
     }
